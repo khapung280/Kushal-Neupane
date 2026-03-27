@@ -185,6 +185,32 @@ export default function Dashboard() {
     internalNotes: 'Editing ticket: TK-042',
   });
 
+  const openCreateProjectSheet = () => {
+    setProjectForm({
+      projectName: '',
+      projectDescription: '',
+      category: '',
+      priority: 'medium',
+      initialStatus: 'planning',
+      startDate: '',
+      targetEndDate: '',
+      estimatedHours: '120',
+      budget: '25000',
+      currency: 'USD',
+      hourlyRate: '150',
+      projectManager: '',
+      client: '',
+      teamMembers: [],
+      objectives: '',
+      deliverables: '',
+      tags: [],
+      tagDraft: '',
+    });
+    setProjectSheetMode('create');
+    setActiveProjectMeta({});
+    setProjectSheetOpen(true);
+  };
+
   useEffect(() => {
     loadDashboardData();
   }, []);
@@ -363,7 +389,13 @@ export default function Dashboard() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="mx-0 my-0 bg-border" />
               <div className="p-2">
-                <DropdownMenuItem className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent">
+                <DropdownMenuItem
+                  className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent"
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    openCreateProjectSheet();
+                  }}
+                >
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 ring-1 ring-inset ring-blue-100">
                     <FolderKanban className="h-4 w-4" />
                   </div>
@@ -663,7 +695,7 @@ export default function Dashboard() {
       <div className="bg-card rounded-xl border border-border p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-semibold text-foreground">Project Progress</h3>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={openCreateProjectSheet}>
             <Plus className="w-4 h-4 mr-2" />
             New Project
           </Button>
@@ -1013,9 +1045,13 @@ export default function Dashboard() {
       <Sheet open={projectSheetOpen} onOpenChange={setProjectSheetOpen}>
         <SheetContent side="right" className="sm:max-w-[720px] border-l border-border p-0">
           <SheetHeader className="px-6 py-6 border-b border-border">
-            <SheetTitle className="text-xl">Edit Project</SheetTitle>
+            <SheetTitle className="text-xl">
+              {projectSheetMode === 'update' ? 'Edit Project' : 'Create New Project'}
+            </SheetTitle>
             <SheetDescription>
-              Update project information, team, and track progress
+              {projectSheetMode === 'update'
+                ? 'Update project information, team, and track progress'
+                : 'Set up a new project with team, timeline, and budget details'}
             </SheetDescription>
           </SheetHeader>
 
