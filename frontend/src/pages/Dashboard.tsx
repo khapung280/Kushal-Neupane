@@ -820,6 +820,7 @@ export default function Dashboard() {
                               ...prev,
                               ticketTitle: 'Login issue - TK-042',
                             }));
+                            setTicketSheetMode('update');
                             setTicketSheetOpen(true);
                           }
                       : activity.type === 'leave'
@@ -2699,6 +2700,372 @@ export default function Dashboard() {
               </Button>
               <Button className="h-10 rounded-xl bg-blue-600 px-7 hover:bg-blue-700">
                 Add Integration
+              </Button>
+            </div>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+
+      <Sheet open={channelSheetOpen} onOpenChange={setChannelSheetOpen}>
+        <SheetContent side="right" className="sm:max-w-[720px] border-l border-border p-0">
+          <SheetHeader className="px-6 py-6 border-b border-border">
+            <SheetTitle className="text-xl">Create New Channel</SheetTitle>
+            <SheetDescription>
+              Set up a new communication channel for your team
+            </SheetDescription>
+          </SheetHeader>
+
+          <div className="flex-1 overflow-y-auto bg-muted/30 px-6 py-6">
+            <div className="space-y-6">
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <MessageSquare className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Channel Information</h4>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">
+                      Channel Name <span className="text-red-500">*</span>
+                    </label>
+                    <InputGroup className="bg-background">
+                      <InputGroupInput
+                        value={channelForm.channelName}
+                        onChange={(e) =>
+                          setChannelForm((p) => ({ ...p, channelName: e.target.value }))
+                        }
+                      />
+                    </InputGroup>
+                    <p className="text-xs text-muted-foreground">
+                      Channel names must be lowercase and use dashes instead of spaces
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">
+                      Description <span className="text-red-500">*</span>
+                    </label>
+                    <InputGroup className="min-h-20 bg-background">
+                      <InputGroupTextarea
+                        placeholder="What is this channel about?"
+                        value={channelForm.description}
+                        onChange={(e) =>
+                          setChannelForm((p) => ({ ...p, description: e.target.value }))
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Channel Type</label>
+                      <Select
+                        value={channelForm.channelType}
+                        onValueChange={(v) => setChannelForm((p) => ({ ...p, channelType: v }))}
+                      >
+                        <SelectTrigger className="w-full bg-background">
+                          <SelectValue placeholder="Public" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="public">Public</SelectItem>
+                          <SelectItem value="private">Private</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Category</label>
+                      <Select
+                        value={channelForm.category}
+                        onValueChange={(v) => setChannelForm((p) => ({ ...p, category: v }))}
+                      >
+                        <SelectTrigger className="w-full bg-background">
+                          <SelectValue placeholder="General" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="general">General</SelectItem>
+                          <SelectItem value="engineering">Engineering</SelectItem>
+                          <SelectItem value="support">Support</SelectItem>
+                          <SelectItem value="marketing">Marketing</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <ShieldAlert className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Privacy &amp; Access</h4>
+                  </div>
+
+                  {(
+                    [
+                      {
+                        key: 'privateChannel',
+                        title: 'Private Channel',
+                        desc: 'Only invited members can see and join',
+                      },
+                      {
+                        key: 'readOnlyChannel',
+                        title: 'Read-Only Channel',
+                        desc: 'Only moderators can post messages',
+                      },
+                      {
+                        key: 'requireApproval',
+                        title: 'Require Approval',
+                        desc: 'Members need approval to join',
+                      },
+                      {
+                        key: 'allowGuestAccess',
+                        title: 'Allow Guest Access',
+                        desc: 'External guests can be invited',
+                      },
+                    ] as const
+                  ).map((row) => (
+                    <div
+                      key={row.key}
+                      className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-3"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">{row.title}</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">{row.desc}</p>
+                      </div>
+                      <Switch
+                        checked={channelForm[row.key]}
+                        onCheckedChange={(v) =>
+                          setChannelForm((p) => ({
+                            ...p,
+                            [row.key]: v,
+                          }))
+                        }
+                      />
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <Users2 className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Members &amp; Moderators</h4>
+                  </div>
+
+                  <div className="space-y-3">
+                    <label className="text-sm font-medium">Add Members</label>
+                    <div className="flex flex-wrap gap-2">
+                      {channelForm.members.map((m) => (
+                        <button
+                          key={m}
+                          type="button"
+                          onClick={() =>
+                            setChannelForm((p) => ({
+                              ...p,
+                              members: p.members.filter((x) => x !== m),
+                            }))
+                          }
+                          className="rounded-full border border-border bg-background px-3 py-1 text-xs text-foreground hover:bg-accent"
+                          title="Remove"
+                        >
+                          {m}
+                        </button>
+                      ))}
+                    </div>
+
+                    <Select
+                      value=""
+                      onValueChange={(v) =>
+                        setChannelForm((p) => ({
+                          ...p,
+                          members: p.members.includes(v) ? p.members : [...p.members, v],
+                        }))
+                      }
+                    >
+                      <SelectTrigger className="w-full bg-background">
+                        <SelectValue placeholder="Select member to add" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {mockData.employees.map((e) => (
+                          <SelectItem key={e.id} value={e.name}>
+                            {e.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <Wrench className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Channel Settings</h4>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Message Retention</label>
+                      <Select
+                        value={channelForm.messageRetention}
+                        onValueChange={(v) =>
+                          setChannelForm((p) => ({ ...p, messageRetention: v }))
+                        }
+                      >
+                        <SelectTrigger className="w-full bg-background">
+                          <SelectValue placeholder="30 days" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="7-days">7 days</SelectItem>
+                          <SelectItem value="30-days">30 days</SelectItem>
+                          <SelectItem value="90-days">90 days</SelectItem>
+                          <SelectItem value="forever">Forever</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  {(
+                    [
+                      {
+                        key: 'fileSharing',
+                        title: 'File Sharing',
+                        desc: 'Allow members to share files',
+                      },
+                      {
+                        key: 'linkPreviews',
+                        title: 'Link Previews',
+                        desc: 'Show previews for shared links',
+                      },
+                      {
+                        key: 'threadedReplies',
+                        title: 'Threaded Replies',
+                        desc: 'Enable message threading',
+                      },
+                    ] as const
+                  ).map((row) => (
+                    <div
+                      key={row.key}
+                      className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-3"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">{row.title}</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">{row.desc}</p>
+                      </div>
+                      <Switch
+                        checked={channelForm[row.key]}
+                        onCheckedChange={(v) => setChannelForm((p) => ({ ...p, [row.key]: v }))}
+                      />
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <Bell className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Notification Settings</h4>
+                  </div>
+
+                  {(
+                    [
+                      {
+                        key: 'defaultNotifications',
+                        title: 'Default Notifications',
+                        desc: 'Send notifications for all messages',
+                      },
+                      {
+                        key: 'mentionAlerts',
+                        title: 'Mention Alerts',
+                        desc: 'Alert when members are mentioned',
+                      },
+                      {
+                        key: 'messagePreviews',
+                        title: 'Message Previews',
+                        desc: 'Show message content in notifications',
+                      },
+                    ] as const
+                  ).map((row) => (
+                    <div
+                      key={row.key}
+                      className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-3"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">{row.title}</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">{row.desc}</p>
+                      </div>
+                      <Switch
+                        checked={channelForm[row.key]}
+                        onCheckedChange={(v) => setChannelForm((p) => ({ ...p, [row.key]: v }))}
+                      />
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <ClipboardList className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Welcome &amp; Guidelines</h4>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Welcome Message</label>
+                    <InputGroup className="min-h-20 bg-background">
+                      <InputGroupTextarea
+                        value={channelForm.welcomeMessage}
+                        onChange={(e) =>
+                          setChannelForm((p) => ({ ...p, welcomeMessage: e.target.value }))
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Channel Rules</label>
+                    <InputGroup className="min-h-24 bg-background">
+                      <InputGroupTextarea
+                        value={channelForm.channelRules}
+                        onChange={(e) =>
+                          setChannelForm((p) => ({ ...p, channelRules: e.target.value }))
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Pinned Message</label>
+                    <InputGroup className="min-h-20 bg-background">
+                      <InputGroupTextarea
+                        placeholder="Important information that stays at the top..."
+                        value={channelForm.pinnedMessage}
+                        onChange={(e) =>
+                          setChannelForm((p) => ({ ...p, pinnedMessage: e.target.value }))
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          <SheetFooter className="border-t border-border bg-background px-6 py-4">
+            <div className="flex items-center justify-end gap-4">
+              <Button
+                variant="outline"
+                className="h-10 rounded-xl px-6"
+                onClick={() => setChannelSheetOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button className="h-10 rounded-xl bg-blue-600 px-7 hover:bg-blue-700">
+                Create Channel
               </Button>
             </div>
           </SheetFooter>
