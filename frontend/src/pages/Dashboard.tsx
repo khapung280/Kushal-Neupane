@@ -185,6 +185,29 @@ export default function Dashboard() {
     internalNotes: 'Editing ticket: TK-042',
   });
 
+  const openAddCustomerSheet = () => {
+    setCustomerForm({
+      companyName: '',
+      primaryContact: '',
+      email: 'contact@company.com',
+      phone: '+1 (555) 123-4567',
+      website: 'https://company.com',
+      street: '123 Business Street',
+      city: 'New York',
+      state: 'NY',
+      zip: '10001',
+      country: '',
+      industry: '',
+      companySize: '',
+      priorityLevel: 'medium',
+      leadSource: '',
+      estimatedDealValue: '50000',
+      currency: 'USD',
+      notes: '',
+    });
+    setCustomerSheetOpen(true);
+  };
+
   const openCreateProjectSheet = () => {
     setProjectForm({
       projectName: '',
@@ -404,7 +427,13 @@ export default function Dashboard() {
                     <p className="mt-0.5 text-xs text-muted-foreground">Create a new project</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent">
+                <DropdownMenuItem
+                  className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent"
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    openAddCustomerSheet();
+                  }}
+                >
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-100">
                     <UserPlus className="h-4 w-4" />
                   </div>
@@ -732,9 +761,9 @@ export default function Dashboard() {
       <Sheet open={customerSheetOpen} onOpenChange={setCustomerSheetOpen}>
         <SheetContent side="right" className="sm:max-w-[720px] border-l border-border p-0">
           <SheetHeader className="px-6 py-6 border-b border-border">
-            <SheetTitle className="text-xl">Edit Customer</SheetTitle>
+            <SheetTitle className="text-xl">Add New Customer</SheetTitle>
             <SheetDescription>
-              Update customer information, contact details, and business data
+              Create a new customer record with contact and business information
             </SheetDescription>
           </SheetHeader>
 
