@@ -32,6 +32,7 @@ import { ProjectCard } from '@/components/ui/ProjectCard';
 import { ActivityItem } from '@/components/ui/ActivityItem';
 import { TaskItem } from '@/components/ui/TaskItem';
 import { Progress } from '@/components/ui/progress';
+import { Switch } from '@/components/ui/switch';
 import {
   InputGroup,
   InputGroupAddon,
@@ -81,6 +82,9 @@ export default function Dashboard() {
   const [employeeSheetOpen, setEmployeeSheetOpen] = useState(false);
   const [employeeMode, setEmployeeMode] = useState<EmployeeSheetMode>('edit');
   const [ticketSheetOpen, setTicketSheetOpen] = useState(false);
+  const [ticketSheetMode, setTicketSheetMode] = useState<'create' | 'update'>('create');
+  const [integrationSheetOpen, setIntegrationSheetOpen] = useState(false);
+  const [channelSheetOpen, setChannelSheetOpen] = useState(false);
   const [customerForm, setCustomerForm] = useState({
     companyName: 'Sarah Johnson',
     primaryContact: '',
@@ -182,7 +186,60 @@ export default function Dashboard() {
     tagDraft: '',
     relatedTickets: '',
     externalLinks: '',
-    internalNotes: 'Editing ticket: TK-042',
+    internalNotes: '',
+  });
+  const [channelForm, setChannelForm] = useState({
+    channelName: 'channel-name',
+    description: '',
+    channelType: 'public',
+    category: 'general',
+    privateChannel: false,
+    readOnlyChannel: false,
+    requireApproval: false,
+    allowGuestAccess: false,
+    members: [] as string[],
+    memberDraft: '',
+    messageRetention: '30-days',
+    fileSharing: true,
+    linkPreviews: true,
+    threadedReplies: true,
+    defaultNotifications: true,
+    mentionAlerts: true,
+    messagePreviews: true,
+    welcomeMessage: 'Welcome to the channel! Please introduce yourself...',
+    channelRules:
+      '1. Be respectful to all members\n2. Keep discussions on topic\n3. No spam or promotional content...',
+    pinnedMessage: '',
+  });
+  const [integrationForm, setIntegrationForm] = useState({
+    integrationName: 'My CRM Integration',
+    integrationType: '',
+    provider: '',
+    category: 'api',
+    description: '',
+    apiEndpoint: 'https://api.example.com/v1',
+    authenticationMethod: 'apiKey',
+    apiKey: '',
+    webhookUrl: 'https://yourapp.com/webhooks/integration',
+    syncFrequency: 'hourly',
+    rateLimitPerHour: '1000',
+    timeoutSeconds: '30',
+    enableIntegration: true,
+    autoSync: true,
+    dataMapping: {
+      users: true,
+      customers: true,
+      orders: true,
+      products: true,
+      analytics: true,
+    },
+    enableNotifications: true,
+    errorNotifications: true,
+    successNotifications: true,
+    notificationEmail: 'admin@company.com',
+    customHeadersJson: '{"X-Custom-Header": "value", "Authorization": "Bearer token"}',
+    customParametersJson: '{"param1": "value1", "param2": "value2"}',
+    notes: '',
   });
 
   const openAddCustomerSheet = () => {
@@ -240,6 +297,103 @@ export default function Dashboard() {
       sendWelcomeEmail: true,
     });
     setEmployeeSheetOpen(true);
+  };
+
+  const openAddIntegrationSheet = () => {
+    setIntegrationForm({
+      integrationName: 'My CRM Integration',
+      integrationType: '',
+      provider: '',
+      category: 'api',
+      description: '',
+      apiEndpoint: 'https://api.example.com/v1',
+      authenticationMethod: 'apiKey',
+      apiKey: '',
+      webhookUrl: 'https://yourapp.com/webhooks/integration',
+      syncFrequency: 'hourly',
+      rateLimitPerHour: '1000',
+      timeoutSeconds: '30',
+      enableIntegration: true,
+      autoSync: true,
+      dataMapping: {
+        users: true,
+        customers: true,
+        orders: true,
+        products: true,
+        analytics: true,
+      },
+      enableNotifications: true,
+      errorNotifications: true,
+      successNotifications: true,
+      notificationEmail: 'admin@company.com',
+      customHeadersJson: '{"X-Custom-Header": "value", "Authorization": "Bearer token"}',
+      customParametersJson: '{"param1": "value1", "param2": "value2"}',
+      notes: '',
+    });
+    setIntegrationSheetOpen(true);
+  };
+
+  const openCreateTicketSheet = () => {
+    setTicketForm({
+      ticketTitle: '',
+      description: '',
+      ticketType: 'bug',
+      category: '',
+      source: 'email',
+      priority: 'medium',
+      status: 'open',
+      customerName: 'John Doe',
+      company: '',
+      customerEmail: 'customer@company.com',
+      customerPhone: '+1 (555) 123-4567',
+      customerId: 'CUST-001',
+      assignedTo: '',
+      department: 'Support',
+      product: '',
+      version: 'v2.1.0',
+      environment: 'Production',
+      stepsToReproduce: '1. Go to...\n2. Click on...\n3. Enter...',
+      expectedBehavior: 'What should have happened?',
+      actualBehavior: 'What actually happened?',
+      businessImpact: 'low',
+      affectedUsers: '1',
+      escalationLevel: 'level-1',
+      dueDate: '',
+      estimatedResolutionTime: '',
+      tagDraft: '',
+      relatedTickets: '',
+      externalLinks: '',
+      internalNotes: '',
+    });
+    setTicketSheetMode('create');
+    setTicketSheetOpen(true);
+  };
+
+  const openCreateChannelSheet = () => {
+    setChannelForm({
+      channelName: 'channel-name',
+      description: '',
+      channelType: 'public',
+      category: 'general',
+      privateChannel: false,
+      readOnlyChannel: false,
+      requireApproval: false,
+      allowGuestAccess: false,
+      members: [],
+      memberDraft: '',
+      messageRetention: '30-days',
+      fileSharing: true,
+      linkPreviews: true,
+      threadedReplies: true,
+      defaultNotifications: true,
+      mentionAlerts: true,
+      messagePreviews: true,
+      welcomeMessage: 'Welcome to the channel! Please introduce yourself...',
+      channelRules:
+        '1. Be respectful to all members\n2. Keep discussions on topic\n3. No spam or promotional content...',
+      pinnedMessage: '',
+    });
+    setChannelSheetOpen(true);
   };
 
   const openCreateProjectSheet = () => {
@@ -491,7 +645,13 @@ export default function Dashboard() {
                     <p className="mt-0.5 text-xs text-muted-foreground">Onboard new team member</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent">
+                <DropdownMenuItem
+                  className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent"
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    openAddIntegrationSheet();
+                  }}
+                >
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 text-purple-600 ring-1 ring-inset ring-purple-100">
                     <Globe className="h-4 w-4" />
                   </div>
@@ -507,7 +667,13 @@ export default function Dashboard() {
                 COMMUNICATION
               </DropdownMenuLabel>
               <div className="p-2 pt-0">
-                <DropdownMenuItem className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent">
+                <DropdownMenuItem
+                  className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent"
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    openCreateTicketSheet();
+                  }}
+                >
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-50 text-red-600 ring-1 ring-inset ring-red-100">
                     <Ticket className="h-4 w-4" />
                   </div>
@@ -516,7 +682,13 @@ export default function Dashboard() {
                     <p className="mt-0.5 text-xs text-muted-foreground">Create support ticket</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent">
+                <DropdownMenuItem
+                  className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent"
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    openCreateChannelSheet();
+                  }}
+                >
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-600 ring-1 ring-inset ring-sky-100">
                     <MessageSquare className="h-4 w-4" />
                   </div>
@@ -1540,15 +1712,20 @@ export default function Dashboard() {
       <Sheet open={ticketSheetOpen} onOpenChange={setTicketSheetOpen}>
         <SheetContent side="right" className="sm:max-w-[720px] border-l border-border p-0">
           <SheetHeader className="px-6 py-6 border-b border-border">
-            <SheetTitle className="text-xl">Edit Support Ticket</SheetTitle>
+            <SheetTitle className="text-xl">
+              {ticketSheetMode === 'update' ? 'Edit Support Ticket' : 'Create New Support Ticket'}
+            </SheetTitle>
             <SheetDescription>
-              Update ticket information and track progress
+              {ticketSheetMode === 'update'
+                ? 'Update ticket information and track progress'
+                : 'Report an issue or request assistance from our support team'}
             </SheetDescription>
           </SheetHeader>
 
           <div className="flex-1 overflow-y-auto bg-muted/30 px-6 py-6">
             <div className="space-y-6">
-              <Card className="rounded-2xl shadow-md">
+              {ticketSheetMode === 'update' && (
+                <Card className="rounded-2xl shadow-md">
                 <CardContent className="space-y-5">
                   <div>
                     <p className="text-sm font-semibold text-foreground">Editing Ticket</p>
@@ -1558,7 +1735,8 @@ export default function Dashboard() {
                     </p>
                   </div>
                 </CardContent>
-              </Card>
+                </Card>
+              )}
 
               <Card className="rounded-2xl shadow-md">
                 <CardContent className="space-y-5">
@@ -2058,6 +2236,7 @@ export default function Dashboard() {
                     <label className="text-sm font-medium">Internal Notes</label>
                     <InputGroup className="min-h-20 bg-background">
                       <InputGroupTextarea
+                        placeholder="Internal notes (not visible to customer)"
                         value={ticketForm.internalNotes}
                         onChange={(e) =>
                           setTicketForm((p) => ({ ...p, internalNotes: e.target.value }))
@@ -2080,7 +2259,446 @@ export default function Dashboard() {
                 Cancel
               </Button>
               <Button className="h-10 rounded-xl bg-blue-600 px-7 hover:bg-blue-700">
-                Update Ticket
+                {ticketSheetMode === 'update' ? 'Update Ticket' : 'Create Ticket'}
+              </Button>
+            </div>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+
+      <Sheet open={integrationSheetOpen} onOpenChange={setIntegrationSheetOpen}>
+        <SheetContent side="right" className="sm:max-w-[720px] border-l border-border p-0">
+          <SheetHeader className="px-6 py-6 border-b border-border">
+            <SheetTitle className="text-xl">Add New Integration</SheetTitle>
+            <SheetDescription>
+              Connect with third-party services and external applications
+            </SheetDescription>
+          </SheetHeader>
+
+          <div className="flex-1 overflow-y-auto bg-muted/30 px-6 py-6">
+            <div className="space-y-6">
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <Globe className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Integration Details</h4>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">
+                        Integration Name <span className="text-red-500">*</span>
+                      </label>
+                      <InputGroup className="bg-background">
+                        <InputGroupInput
+                          value={integrationForm.integrationName}
+                          onChange={(e) =>
+                            setIntegrationForm((p) => ({ ...p, integrationName: e.target.value }))
+                          }
+                        />
+                      </InputGroup>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">
+                        Integration Type <span className="text-red-500">*</span>
+                      </label>
+                      <Select
+                        value={integrationForm.integrationType}
+                        onValueChange={(v) =>
+                          setIntegrationForm((p) => ({ ...p, integrationType: v }))
+                        }
+                      >
+                        <SelectTrigger className="w-full bg-background">
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="crm">CRM</SelectItem>
+                          <SelectItem value="payments">Payments</SelectItem>
+                          <SelectItem value="analytics">Analytics</SelectItem>
+                          <SelectItem value="messaging">Messaging</SelectItem>
+                          <SelectItem value="storage">Storage</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Provider</label>
+                      <Select
+                        value={integrationForm.provider}
+                        onValueChange={(v) => setIntegrationForm((p) => ({ ...p, provider: v }))}
+                      >
+                        <SelectTrigger className="w-full bg-background">
+                          <SelectValue placeholder="Select provider" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="salesforce">Salesforce</SelectItem>
+                          <SelectItem value="hubspot">HubSpot</SelectItem>
+                          <SelectItem value="stripe">Stripe</SelectItem>
+                          <SelectItem value="google">Google</SelectItem>
+                          <SelectItem value="custom">Custom</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Category</label>
+                      <Select
+                        value={integrationForm.category}
+                        onValueChange={(v) => setIntegrationForm((p) => ({ ...p, category: v }))}
+                      >
+                        <SelectTrigger className="w-full bg-background">
+                          <SelectValue placeholder="API" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="api">API</SelectItem>
+                          <SelectItem value="webhook">Webhook</SelectItem>
+                          <SelectItem value="oauth">OAuth</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Description</label>
+                    <InputGroup className="min-h-20 bg-background">
+                      <InputGroupTextarea
+                        placeholder="Describe what this integration does..."
+                        value={integrationForm.description}
+                        onChange={(e) =>
+                          setIntegrationForm((p) => ({ ...p, description: e.target.value }))
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <ShieldAlert className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Authentication &amp; Configuration</h4>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">
+                      API Endpoint <span className="text-red-500">*</span>
+                    </label>
+                    <InputGroup className="bg-background">
+                      <InputGroupInput
+                        value={integrationForm.apiEndpoint}
+                        onChange={(e) =>
+                          setIntegrationForm((p) => ({ ...p, apiEndpoint: e.target.value }))
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Authentication Method</label>
+                      <Select
+                        value={integrationForm.authenticationMethod}
+                        onValueChange={(v) =>
+                          setIntegrationForm((p) => ({ ...p, authenticationMethod: v }))
+                        }
+                      >
+                        <SelectTrigger className="w-full bg-background">
+                          <SelectValue placeholder="API Key" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="apiKey">API Key</SelectItem>
+                          <SelectItem value="bearer">Bearer Token</SelectItem>
+                          <SelectItem value="oauth2">OAuth 2.0</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">
+                        API Key <span className="text-red-500">*</span>
+                      </label>
+                      <InputGroup className="bg-background">
+                        <InputGroupInput
+                          placeholder="Enter your API key"
+                          value={integrationForm.apiKey}
+                          onChange={(e) =>
+                            setIntegrationForm((p) => ({ ...p, apiKey: e.target.value }))
+                          }
+                        />
+                      </InputGroup>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Webhook URL (Optional)</label>
+                    <InputGroup className="bg-background">
+                      <InputGroupInput
+                        value={integrationForm.webhookUrl}
+                        onChange={(e) =>
+                          setIntegrationForm((p) => ({ ...p, webhookUrl: e.target.value }))
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <CalendarDays className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Sync Settings</h4>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Sync Frequency</label>
+                      <Select
+                        value={integrationForm.syncFrequency}
+                        onValueChange={(v) =>
+                          setIntegrationForm((p) => ({ ...p, syncFrequency: v }))
+                        }
+                      >
+                        <SelectTrigger className="w-full bg-background">
+                          <SelectValue placeholder="Hourly" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="realtime">Real-time</SelectItem>
+                          <SelectItem value="hourly">Hourly</SelectItem>
+                          <SelectItem value="daily">Daily</SelectItem>
+                          <SelectItem value="weekly">Weekly</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Rate Limit (per hour)</label>
+                      <InputGroup className="bg-background">
+                        <InputGroupInput
+                          value={integrationForm.rateLimitPerHour}
+                          onChange={(e) =>
+                            setIntegrationForm((p) => ({ ...p, rateLimitPerHour: e.target.value }))
+                          }
+                        />
+                      </InputGroup>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Timeout (seconds)</label>
+                      <InputGroup className="bg-background">
+                        <InputGroupInput
+                          value={integrationForm.timeoutSeconds}
+                          onChange={(e) =>
+                            setIntegrationForm((p) => ({ ...p, timeoutSeconds: e.target.value }))
+                          }
+                        />
+                      </InputGroup>
+                    </div>
+
+                    <div className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-3">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">Enable Integration</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          Activate this integration immediately
+                        </p>
+                      </div>
+                      <Switch
+                        checked={integrationForm.enableIntegration}
+                        onCheckedChange={(v) =>
+                          setIntegrationForm((p) => ({ ...p, enableIntegration: v }))
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-3">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-foreground">Auto Sync</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">
+                        Automatically sync data based on frequency
+                      </p>
+                    </div>
+                    <Switch
+                      checked={integrationForm.autoSync}
+                      onCheckedChange={(v) => setIntegrationForm((p) => ({ ...p, autoSync: v }))}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <ClipboardList className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Data Mapping</h4>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground">
+                    Select which data types should be synchronized with this integration
+                  </p>
+
+                  {(
+                    [
+                      { key: 'users', label: 'users', desc: 'Sync users data' },
+                      { key: 'customers', label: 'customers', desc: 'Sync customers data' },
+                      { key: 'orders', label: 'orders', desc: 'Sync orders data' },
+                      { key: 'products', label: 'products', desc: 'Sync products data' },
+                      { key: 'analytics', label: 'analytics', desc: 'Sync analytics data' },
+                    ] as const
+                  ).map((row) => (
+                    <div
+                      key={row.key}
+                      className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-3"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">{row.label}</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">{row.desc}</p>
+                      </div>
+                      <Switch
+                        checked={integrationForm.dataMapping[row.key]}
+                        onCheckedChange={(v) =>
+                          setIntegrationForm((p) => ({
+                            ...p,
+                            dataMapping: { ...p.dataMapping, [row.key]: v },
+                          }))
+                        }
+                      />
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <Mail className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Notifications</h4>
+                  </div>
+
+                  <div className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-3">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-foreground">Enable Notifications</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">
+                        Receive email notifications for this integration
+                      </p>
+                    </div>
+                    <Switch
+                      checked={integrationForm.enableNotifications}
+                      onCheckedChange={(v) =>
+                        setIntegrationForm((p) => ({ ...p, enableNotifications: v }))
+                      }
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-3">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">Error Notifications</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          Notify when sync errors occur
+                        </p>
+                      </div>
+                      <Switch
+                        checked={integrationForm.errorNotifications}
+                        onCheckedChange={(v) =>
+                          setIntegrationForm((p) => ({ ...p, errorNotifications: v }))
+                        }
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-3">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">Success Notifications</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          Notify when sync completes successfully
+                        </p>
+                      </div>
+                      <Switch
+                        checked={integrationForm.successNotifications}
+                        onCheckedChange={(v) =>
+                          setIntegrationForm((p) => ({ ...p, successNotifications: v }))
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Notification Email</label>
+                    <InputGroup className="bg-background">
+                      <InputGroupInput
+                        value={integrationForm.notificationEmail}
+                        onChange={(e) =>
+                          setIntegrationForm((p) => ({ ...p, notificationEmail: e.target.value }))
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl shadow-md">
+                <CardContent className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <Wrench className="h-5 w-5 text-muted-foreground" />
+                    <h4 className="text-base font-semibold">Advanced Settings</h4>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Custom Headers (JSON)</label>
+                    <InputGroup className="min-h-20 bg-background">
+                      <InputGroupTextarea
+                        value={integrationForm.customHeadersJson}
+                        onChange={(e) =>
+                          setIntegrationForm((p) => ({ ...p, customHeadersJson: e.target.value }))
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Custom Parameters (JSON)</label>
+                    <InputGroup className="min-h-20 bg-background">
+                      <InputGroupTextarea
+                        value={integrationForm.customParametersJson}
+                        onChange={(e) =>
+                          setIntegrationForm((p) => ({ ...p, customParametersJson: e.target.value }))
+                        }
+                      />
+                    </InputGroup>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Notes</label>
+                    <InputGroup className="min-h-20 bg-background">
+                      <InputGroupTextarea
+                        placeholder="Any additional notes about this integration..."
+                        value={integrationForm.notes}
+                        onChange={(e) => setIntegrationForm((p) => ({ ...p, notes: e.target.value }))}
+                      />
+                    </InputGroup>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          <SheetFooter className="border-t border-border bg-background px-6 py-4">
+            <div className="flex items-center justify-end gap-4">
+              <Button
+                variant="outline"
+                className="h-10 rounded-xl px-6"
+                onClick={() => setIntegrationSheetOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button className="h-10 rounded-xl bg-blue-600 px-7 hover:bg-blue-700">
+                Add Integration
               </Button>
             </div>
           </SheetFooter>
