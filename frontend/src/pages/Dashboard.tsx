@@ -208,6 +208,40 @@ export default function Dashboard() {
     setCustomerSheetOpen(true);
   };
 
+  const openAddEmployeeSheet = () => {
+    setEmployeeMode('add');
+    setEmployeeForm({
+      firstName: 'John',
+      lastName: 'Doe',
+      workEmail: 'john.doe@company.com',
+      phoneNumber: '+1 (555) 123-4567',
+      dateOfBirth: '',
+      personalEmail: 'john@personal.com',
+      employeeId: 'EMP001',
+      department: '',
+      position: '',
+      reportingTo: '',
+      startDate: '',
+      employmentType: 'Full-time',
+      workLocation: 'Office',
+      role: 'Employee',
+      annualSalary: '75000',
+      currency: 'USD',
+      payFrequency: 'Monthly',
+      benefits: '',
+      skills: '',
+      emergencyContactName: '',
+      emergencyPhone: '',
+      emergencyRelationship: '',
+      additionalNotes: '',
+      accessLevel: 'Standard',
+      activeEmployee: true,
+      systemLoginAccess: true,
+      sendWelcomeEmail: true,
+    });
+    setEmployeeSheetOpen(true);
+  };
+
   const openCreateProjectSheet = () => {
     setProjectForm({
       projectName: '',
@@ -442,7 +476,13 @@ export default function Dashboard() {
                     <p className="mt-0.5 text-xs text-muted-foreground">Add new customer/lead</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent">
+                <DropdownMenuItem
+                  className="cursor-pointer gap-4 rounded-xl px-4 py-3 focus:bg-accent"
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    openAddEmployeeSheet();
+                  }}
+                >
                   <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600 ring-1 ring-inset ring-amber-100">
                     <Users className="h-4 w-4" />
                   </div>

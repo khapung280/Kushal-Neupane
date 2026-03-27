@@ -64,7 +64,11 @@ type Props = {
 };
 
 export function EmployeeSheet({ open, onOpenChange, mode, form, setForm, onSubmit }: Props) {
-  const title = mode === 'add' ? 'Add Employee' : 'Edit Employee';
+  const title = mode === 'add' ? 'Add New Employee' : 'Edit Employee';
+  const description =
+    mode === 'add'
+      ? 'Add a new team member with personal and employment information'
+      : 'Update employee information, employment details, and access settings';
   const primaryCta = mode === 'add' ? 'Add Employee' : 'Update Employee';
 
   return (
@@ -72,9 +76,7 @@ export function EmployeeSheet({ open, onOpenChange, mode, form, setForm, onSubmi
       <SheetContent side="right" className="sm:max-w-[720px] border-l border-border p-0">
         <SheetHeader className="px-6 py-6 border-b border-border">
           <SheetTitle className="text-xl">{title}</SheetTitle>
-          <SheetDescription>
-            Update employee information, employment details, and access settings
-          </SheetDescription>
+          <SheetDescription>{description}</SheetDescription>
         </SheetHeader>
 
         <div className="flex-1 overflow-y-auto bg-muted/30 px-6 py-6">
