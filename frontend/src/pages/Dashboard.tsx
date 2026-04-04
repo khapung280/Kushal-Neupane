@@ -368,14 +368,14 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Dashboard</h2>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">Dashboard</h2>
           <p className="text-muted-foreground text-sm mt-1">
             Welcome back! Here's what's happening with your business today.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -406,7 +406,7 @@ export default function Dashboard() {
             <DropdownMenuContent
               align="start"
               sideOffset={10}
-              className="w-[300px] rounded-2xl border border-border bg-popover p-0 shadow-lg"
+              className="w-[min(18.75rem,calc(100vw-2rem))] max-w-[300px] rounded-2xl border border-border bg-popover p-0 shadow-lg"
             >
               <DropdownMenuLabel className="px-6 py-4 text-xs font-semibold tracking-widest text-muted-foreground">
                 SELECT PERIOD
@@ -505,7 +505,7 @@ export default function Dashboard() {
             <DropdownMenuContent
               align="end"
               sideOffset={10}
-              className="w-[360px] rounded-2xl border border-border bg-popover p-0 shadow-lg"
+              className="w-[min(22.5rem,calc(100vw-2rem))] max-w-[360px] rounded-2xl border border-border bg-popover p-0 shadow-lg"
             >
               <DropdownMenuLabel className="px-6 py-4 text-xs font-semibold tracking-widest text-muted-foreground">
                 CREATE NEW
@@ -633,8 +633,8 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Activity */}
-        <div className="lg:col-span-2 bg-card rounded-xl border border-border p-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="lg:col-span-2 bg-card rounded-xl border border-border p-4 sm:p-6">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-6">
             <h3 className="font-semibold text-foreground">Recent Activity</h3>
             <button className="text-sm text-blue-500 hover:text-blue-400">View All</button>
           </div>
@@ -785,7 +785,7 @@ export default function Dashboard() {
         </div>
 
         {/* Upcoming Tasks */}
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border border-border p-4 sm:p-6">
           <h3 className="font-semibold text-foreground mb-6">Upcoming Tasks</h3>
           <div className="space-y-4">
             {tasks.map((task) => (
@@ -833,8 +833,8 @@ export default function Dashboard() {
       </div>
 
       {/* Project Progress */}
-      <div className="bg-card rounded-xl border border-border p-6">
-        <div className="flex items-center justify-between mb-6">
+      <div className="bg-card rounded-xl border border-border p-4 sm:p-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
           <h3 className="font-semibold text-foreground">Project Progress</h3>
           <Button variant="outline" size="sm" onClick={openCreateProjectSheet}>
             <Plus className="w-4 h-4 mr-2" />
@@ -871,15 +871,18 @@ export default function Dashboard() {
       </div>
 
       <Sheet open={customerSheetOpen} onOpenChange={setCustomerSheetOpen}>
-        <SheetContent side="right" className="sm:max-w-[720px] border-l border-border p-0">
-          <SheetHeader className="px-6 py-6 border-b border-border">
+        <SheetContent
+          side="right"
+          className="w-full max-w-full border-l border-border p-0 sm:max-w-[min(720px,100vw)]"
+        >
+          <SheetHeader className="px-4 py-4 sm:px-6 sm:py-6 border-b border-border">
             <SheetTitle className="text-xl">Add New Customer</SheetTitle>
             <SheetDescription>
               Create a new customer record with contact and business information
             </SheetDescription>
           </SheetHeader>
 
-          <div className="flex-1 overflow-y-auto bg-muted/30 px-6 py-6">
+          <div className="flex-1 overflow-y-auto bg-muted/30 px-4 py-4 sm:px-6 sm:py-6">
             <div className="space-y-6">
               <Card className="rounded-2xl shadow-md">
                 <CardContent className="space-y-5">
@@ -888,7 +891,7 @@ export default function Dashboard() {
                     <h4 className="text-base font-semibold">Basic Information</h4>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">
                         Company Name <span className="text-red-500">*</span>
@@ -919,7 +922,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">
                         Email Address <span className="text-red-500">*</span>
@@ -985,7 +988,7 @@ export default function Dashboard() {
                     </InputGroup>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">City</label>
                       <InputGroup className="bg-background">
@@ -1006,7 +1009,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">ZIP/Postal Code</label>
                       <InputGroup className="bg-background">
@@ -1043,7 +1046,7 @@ export default function Dashboard() {
                     <h4 className="text-base font-semibold">Business Details</h4>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Industry</label>
                       <Select
@@ -1081,7 +1084,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Priority Level</label>
                       <Select
@@ -1118,7 +1121,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Estimated Deal Value</label>
                       <InputGroup className="bg-background">
@@ -1184,8 +1187,11 @@ export default function Dashboard() {
       </Sheet>
 
       <Sheet open={projectSheetOpen} onOpenChange={setProjectSheetOpen}>
-        <SheetContent side="right" className="sm:max-w-[720px] border-l border-border p-0">
-          <SheetHeader className="px-6 py-6 border-b border-border">
+        <SheetContent
+          side="right"
+          className="w-full max-w-full border-l border-border p-0 sm:max-w-[min(720px,100vw)]"
+        >
+          <SheetHeader className="px-4 py-4 sm:px-6 sm:py-6 border-b border-border">
             <SheetTitle className="text-xl">
               {projectSheetMode === 'update' ? 'Edit Project' : 'Create New Project'}
             </SheetTitle>
@@ -1196,11 +1202,11 @@ export default function Dashboard() {
             </SheetDescription>
           </SheetHeader>
 
-          <div className="flex-1 overflow-y-auto bg-muted/30 px-6 py-6">
+          <div className="flex-1 overflow-y-auto bg-muted/30 px-4 py-4 sm:px-6 sm:py-6">
             <div className="space-y-6">
               {projectSheetMode === 'update' && (
                 <Card className="rounded-2xl border border-blue-100 bg-blue-50/70 shadow-md dark:border-blue-500/15 dark:bg-blue-950/25">
-                  <CardContent className="flex items-center justify-between gap-6">
+                  <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
                     <div className="flex min-w-0 items-center gap-4">
                       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-200">
                         <FolderKanban className="h-5 w-5" />
@@ -1215,7 +1221,7 @@ export default function Dashboard() {
                       </div>
                     </div>
 
-                    <div className="w-44 shrink-0">
+                    <div className="w-full shrink-0 sm:w-44">
                       <div className="mb-2 flex items-center justify-end text-sm font-medium text-blue-700 dark:text-blue-200">
                         Progress
                       </div>
@@ -1235,7 +1241,7 @@ export default function Dashboard() {
                     <h4 className="text-base font-semibold">Project Information</h4>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">
                         Project Name <span className="text-red-500">*</span>
@@ -1284,7 +1290,7 @@ export default function Dashboard() {
                     </InputGroup>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Priority</label>
                       <Select
@@ -1337,7 +1343,7 @@ export default function Dashboard() {
                     <h4 className="text-base font-semibold">Timeline &amp; Budget</h4>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Start Date</label>
                       <InputGroup className="bg-background">
@@ -1363,7 +1369,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Estimated Hours</label>
                       <InputGroup className="bg-background">
@@ -1390,7 +1396,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Currency</label>
                       <Select
@@ -1433,7 +1439,7 @@ export default function Dashboard() {
                     <h4 className="text-base font-semibold">Team &amp; Client</h4>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Project Manager</label>
                       <Select
@@ -1610,15 +1616,18 @@ export default function Dashboard() {
       </Sheet>
 
       <Sheet open={ticketSheetOpen} onOpenChange={setTicketSheetOpen}>
-        <SheetContent side="right" className="sm:max-w-[720px] border-l border-border p-0">
-          <SheetHeader className="px-6 py-6 border-b border-border">
+        <SheetContent
+          side="right"
+          className="w-full max-w-full border-l border-border p-0 sm:max-w-[min(720px,100vw)]"
+        >
+          <SheetHeader className="px-4 py-4 sm:px-6 sm:py-6 border-b border-border">
             <SheetTitle className="text-xl">Edit Support Ticket</SheetTitle>
             <SheetDescription>
               Update ticket information and track progress
             </SheetDescription>
           </SheetHeader>
 
-          <div className="flex-1 overflow-y-auto bg-muted/30 px-6 py-6">
+          <div className="flex-1 overflow-y-auto bg-muted/30 px-4 py-4 sm:px-6 sm:py-6">
             <div className="space-y-6">
               <Card className="rounded-2xl shadow-md">
                 <CardContent className="space-y-5">
@@ -1669,7 +1678,7 @@ export default function Dashboard() {
                     </InputGroup>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">
                         Ticket Type <span className="text-red-500">*</span>
@@ -1709,7 +1718,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Source</label>
                       <Select
@@ -1748,7 +1757,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Status</label>
                       <Select
@@ -1777,7 +1786,7 @@ export default function Dashboard() {
                     <h4 className="text-base font-semibold">Customer Information</h4>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">
                         Customer Name <span className="text-red-500">*</span>
@@ -1803,7 +1812,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">
                         Email Address <span className="text-red-500">*</span>
@@ -1857,7 +1866,7 @@ export default function Dashboard() {
                     <h4 className="text-base font-semibold">Assignment &amp; Technical Details</h4>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Assigned To</label>
                       <Select
@@ -1889,7 +1898,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Product/Service</label>
                       <Select
@@ -1920,7 +1929,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Environment</label>
                       <InputGroup className="bg-background">
@@ -1955,7 +1964,7 @@ export default function Dashboard() {
                     </InputGroup>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Expected Behavior</label>
                       <InputGroup className="min-h-24 bg-background">
@@ -1989,7 +1998,7 @@ export default function Dashboard() {
                     <h4 className="text-base font-semibold">Impact &amp; Timeline</h4>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Business Impact</label>
                       <Select
@@ -2019,7 +2028,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Escalation Level</label>
                       <Select
@@ -2160,15 +2169,18 @@ export default function Dashboard() {
       </Sheet>
 
       <Sheet open={integrationSheetOpen} onOpenChange={setIntegrationSheetOpen}>
-        <SheetContent side="right" className="sm:max-w-[720px] border-l border-border p-0">
-          <SheetHeader className="px-6 py-6 border-b border-border">
+        <SheetContent
+          side="right"
+          className="w-full max-w-full border-l border-border p-0 sm:max-w-[min(720px,100vw)]"
+        >
+          <SheetHeader className="px-4 py-4 sm:px-6 sm:py-6 border-b border-border">
             <SheetTitle className="text-xl">Add New Integration</SheetTitle>
             <SheetDescription>
               Connect with third-party services and external applications
             </SheetDescription>
           </SheetHeader>
 
-          <div className="flex-1 overflow-y-auto bg-muted/30 px-6 py-6">
+          <div className="flex-1 overflow-y-auto bg-muted/30 px-4 py-4 sm:px-6 sm:py-6">
             <div className="space-y-6">
               <Card className="rounded-2xl shadow-md">
                 <CardContent className="space-y-5">
@@ -2177,7 +2189,7 @@ export default function Dashboard() {
                     <h4 className="text-base font-semibold">Integration Details</h4>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">
                         Integration Name <span className="text-red-500">*</span>
@@ -2216,7 +2228,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Provider</label>
                       <Select
@@ -2290,7 +2302,7 @@ export default function Dashboard() {
                     </InputGroup>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Authentication Method</label>
                       <Select
@@ -2347,7 +2359,7 @@ export default function Dashboard() {
                     <h4 className="text-base font-semibold">Sync Settings</h4>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Sync Frequency</label>
                       <Select
@@ -2381,7 +2393,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Timeout (seconds)</label>
                       <InputGroup className="bg-background">
@@ -2489,7 +2501,7 @@ export default function Dashboard() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-3">
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-foreground">Error Notifications</p>

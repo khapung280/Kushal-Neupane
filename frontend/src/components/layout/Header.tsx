@@ -1,6 +1,15 @@
 import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Search, Bell, Moon, Sun, User as UserIcon, Settings as SettingsIcon, LogOut } from 'lucide-react';
+import {
+  Menu,
+  Search,
+  Bell,
+  Moon,
+  Sun,
+  User as UserIcon,
+  Settings as SettingsIcon,
+  LogOut,
+} from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Input } from '@/components/ui/input';
 import { CommandPalette } from '@/components/layout/CommandPalette';
@@ -24,7 +33,11 @@ const pageInfo: Record<string, { title: string; subtitle: string }> = {
   '/settings': { title: 'Settings', subtitle: 'System configuration and preferences' },
 };
 
-export function Header() {
+type HeaderProps = {
+  onOpenSidebar?: () => void;
+};
+
+export function Header({ onOpenSidebar }: HeaderProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const info = pageInfo[location.pathname] || pageInfo['/'];
@@ -64,29 +77,40 @@ export function Header() {
   }, []);
 
   return (
-    <header className="h-16 bg-background border-b border-border flex items-center justify-between px-6">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <span className="font-medium text-foreground">DeskMate</span>
-        <span className="text-muted-foreground">/</span>
-        <span>{info.title}</span>
-        <span className="text-muted-foreground/70 ml-2 text-xs">{info.subtitle}</span>
+    <header className="min-h-16 bg-background border-b border-border flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-4 sm:px-6 py-3 sm:py-0">
+      <div className="flex items-center gap-2 min-w-0">
+        <button
+          type="button"
+          onClick={onOpenSidebar}
+          className="lg:hidden shrink-0 p-2 -ml-2 text-muted-foreground hover:bg-accent rounded-lg transition-colors"
+          aria-label="Open menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+        <div className="flex flex-col min-w-0 sm:flex-row sm:items-center sm:gap-2 sm:flex-wrap text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="font-medium text-foreground shrink-0">DeskMate</span>
+            <span className="text-muted-foreground shrink-0">/</span>
+            <span className="truncate">{info.title}</span>
+          </div>
+          <span className="text-muted-foreground/70 text-xs sm:ml-2 line-clamp-2 sm:line-clamp-1">
+            {info.subtitle}
+          </span>
+        </div>
       </div>
 
-      {/* Right Side */}
-      <div className="flex items-center gap-4">
-        {/* Search */}
-        <div className="relative">
-          <Search className="w-5 h-5 absolute left-3 top-2.5 text-muted-foreground/70" />
+      <div className="flex w-full sm:w-auto flex-wrap items-center gap-2 sm:gap-3 sm:shrink-0">
+        <div className="relative flex-1 min-w-0 sm:flex-initial sm:max-w-[min(20rem,100%)]">
+          <Search className="w-5 h-5 absolute left-3 top-2.5 text-muted-foreground/70 pointer-events-none" />
           <Input
             type="text"
-            placeholder="Search across modules... (⌘K)"
-            className="w-80 pl-10 pr-12 py-2 bg-muted/40 border-border"
+            placeholder="Search… (⌘K)"
+            className="w-full sm:w-80 pl-10 pr-10 sm:pr-12 py-2 bg-muted/40 border-border"
             readOnly
             onClick={() => setCommandOpen(true)}
             onFocus={() => setCommandOpen(true)}
           />
-          <span className="absolute right-3 top-2 text-xs text-muted-foreground border border-border rounded px-1.5">
+          <span className="hidden sm:inline absolute right-3 top-2 text-xs text-muted-foreground border border-border rounded px-1.5">
             ⌘K
           </span>
         </div>
@@ -114,7 +138,7 @@ export function Header() {
           <DropdownMenuContent
             align="end"
             sideOffset={10}
-            className="w-[360px] rounded-2xl border border-border bg-popover p-0 shadow-lg"
+            className="w-[min(22.5rem,calc(100vw-2rem))] max-w-[360px] rounded-2xl border border-border bg-popover p-0 shadow-lg"
           >
             <div className="px-4 py-3">
               <p className="text-sm font-semibold text-foreground">Notifications</p>
@@ -162,7 +186,7 @@ export function Header() {
           <DropdownMenuContent
             align="end"
             sideOffset={10}
-            className="w-[260px] rounded-2xl border border-border bg-popover p-0 shadow-lg"
+            className="w-[min(16.25rem,calc(100vw-2rem))] max-w-[260px] rounded-2xl border border-border bg-popover p-0 shadow-lg"
           >
             <div className="px-4 py-3">
               <p className="text-sm font-semibold text-foreground">employee</p>

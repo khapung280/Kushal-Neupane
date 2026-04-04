@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
@@ -12,12 +13,14 @@ import Settings from '@/pages/Settings';
 import { Toaster } from '@/components/ui/sonner';
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header />
-        <main className="flex-1 overflow-y-auto bg-background p-6">
+    <div className="flex h-screen min-h-0 overflow-hidden bg-background">
+      <Sidebar mobileOpen={sidebarOpen} onMobileOpenChange={setSidebarOpen} />
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <Header onOpenSidebar={() => setSidebarOpen(true)} />
+        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-background p-4 sm:p-6">
           {children}
         </main>
       </div>
