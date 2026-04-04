@@ -10,10 +10,6 @@ import {
   Eye,
   Pencil,
   Star,
-  DollarSign,
-  Users,
-  TrendingUp,
-  Building2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,35 +24,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { customersApi, crmApi } from '@/services/api';
+import { customersApi } from '@/services/api';
 import type { Customer } from '@/types';
 
 const INDUSTRIES = ['All', 'Technology', 'Software', 'Consulting', 'Retail', 'Design', 'Finance'];
 const STATUSES = ['All', 'Active', 'Inactive'];
 
 
-function formatRevenue(value: number) {
-  if (value >= 1000000) {
-    return `$${(value / 1000000).toFixed(1)}M`;
-  }
-  if (value >= 1000) {
-    return `$${(value / 1000).toFixed(1)}K`;
-  }
-  return `$${value.toLocaleString()}`;
-}
-
 export default function CRM() {
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [crmStats, setCrmStats] = useState({
-    totalPipeline: 0,
-    pipelineChange: 0,
-    activeLeads: 0,
-    leadsChange: 0,
-    conversionRate: 0,
-    conversionChange: 0,
-    avgDealSize: 0,
-    dealSizeChange: 0,
-  });
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [industryFilter, setIndustryFilter] = useState('All');
@@ -69,12 +45,8 @@ export default function CRM() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [customersData, statsData] = await Promise.all([
-        customersApi.getAll(),
-        crmApi.getStats(),
-      ]);
+      const customersData = await customersApi.getAll();
       setCustomers(customersData);
-      setCrmStats(statsData);
     } catch (error) {
       console.error('Error loading CRM data:', error);
     } finally {
@@ -148,72 +120,6 @@ export default function CRM() {
               </div>
             </DialogContent>
           </Dialog>
-        </div>
-      </div>
-
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-              <DollarSign className="w-5 h-5 text-green-600" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Total Pipeline</p>
-              <p className="text-xl font-bold text-gray-900">
-                {formatRevenue(crmStats.totalPipeline)}
-              </p>
-              <p className="text-sm text-green-600 font-medium">
-                +{crmStats.pipelineChange}%
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-              <Users className="w-5 h-5 text-blue-600" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Active Leads</p>
-              <p className="text-xl font-bold text-gray-900">{crmStats.activeLeads}</p>
-              <p className="text-sm text-green-600 font-medium">
-                +{crmStats.leadsChange}%
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 text-violet-600" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Conversion Rate</p>
-              <p className="text-xl font-bold text-gray-900">
-                {crmStats.conversionRate}%
-              </p>
-              <p className="text-sm text-green-600 font-medium">
-                +{crmStats.conversionChange}%
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-amber-600" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Avg Deal Size</p>
-              <p className="text-xl font-bold text-gray-900">
-                {formatRevenue(crmStats.avgDealSize)}
-              </p>
-              <p className="text-sm text-green-600 font-medium">
-                +{crmStats.dealSizeChange}%
-              </p>
-            </div>
-          </div>
         </div>
       </div>
 
